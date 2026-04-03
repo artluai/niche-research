@@ -358,7 +358,7 @@ input,select{font-family:inherit}
     </div>
     <div class="cred-bar">
       <label>API Key</label>
-      <input id="auth-inp" type="password" value="YWRtaW5AYXJ0bHUuYWk6OTJkNmJlMmUzYmUwMmNhNg==" placeholder="Base64 email:password">
+      <input id="auth-inp" type="password" value="" placeholder="Base64 email:password">
       <button class="cred-save" onclick="saveAuth()">Save</button>
       <span class="cred-ok" id="auth-ok"></span>
       <span class="cred-hint">Encode <b>email:password</b> at <a href="https://www.base64encode.org" target="_blank">base64encode.org</a></span>
@@ -584,7 +584,7 @@ const CAT_INDUSTRY={
   10010:'general',10006:'ecommerce',10018:'legal',10108:'general',13575:'ecommerce',
 };
 
-let auth="Basic YWRtaW5AYXJ0bHUuYWk6OTJkNmJlMmUzYmUwMmNhNg==";
+let auth=localStorage.getItem('kw_auth')||"";
 let running=new Set();
 let pipes=[makePipe("p1","Pipeline A",COLORS[0])];
 let selectedSaved=new Set();
@@ -1953,7 +1953,9 @@ document.addEventListener('click',e=>{
 });
 
 window.saveAuth=()=>{
+  const v=document.getElementById('auth-inp')?.value?.trim()||'';
   auth=v.startsWith('Basic ')?v:`Basic ${v}`;
+  localStorage.setItem('kw_auth',auth);
   const el=document.getElementById('auth-ok');
   if(el){el.textContent='✓ Saved';setTimeout(()=>{if(el)el.textContent=''},2000);}
 };
