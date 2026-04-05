@@ -3,6 +3,13 @@ const fs = require('fs');
 const https = require('https');
 const path = require('path');
 
+// Load .env if present (local dev)
+try { require('dotenv').config(); } catch(e) {}
+
+if (!process.env.DATAFORSEO_AUTH) {
+  console.warn('[server] DATAFORSEO_AUTH not set — will use key supplied by client.');
+}
+
 const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
@@ -34,7 +41,7 @@ const server = http.createServer((req, res) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': req.headers['authorization'],
+          'Authorization': process.env.DATAFORSEO_AUTH || req.headers['authorization'],
           'Content-Length': Buffer.byteLength(body)
         }
       };
@@ -61,7 +68,7 @@ const server = http.createServer((req, res) => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': req.headers['authorization']
+        'Authorization': process.env.DATAFORSEO_AUTH || req.headers['authorization']
       }
     };
     const proxy = https.request(options, apiRes => {

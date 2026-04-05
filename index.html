@@ -2175,7 +2175,7 @@ async function cbFetchAll(){
   const el=document.getElementById('cb-foot-load');
   if(el)el.textContent='Fetching…';
   try{
-    const r=await fetch(`${API_BASE}/dataforseo_labs/categories`,{headers:{'Authorization':auth}});
+    const r=await fetch(`${API_BASE}/dataforseo_labs/categories`,{headers:{'Authorization':auth,'Content-Type':'application/json'}});
     const d=await r.json();
     const cats=d.tasks?.[0]?.result||[];
     if(cats.length){
