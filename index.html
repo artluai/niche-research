@@ -730,6 +730,10 @@ async function runPipe(id){
   if(running.has(id))return;
   const p=pipes.find(p=>p.id===id);
   if(!p)return;
+  if(!auth){
+    mut(id,{status:'error',error:'No API key — paste your DataForSEO key above and click Save.'});
+    return;
+  }
   const codes=[...p.cats,...p.customCats.map(c=>c.code)];
   if(!codes.length)return;
   running.add(id);
